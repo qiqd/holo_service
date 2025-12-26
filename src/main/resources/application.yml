@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: holo_backend
+  data:
+    mongodb:
+      uri: mongodb://localhost/test
+      database: holo_db
+  profiles:
+    active: pro
+jwt:
+   secret:  you_own_jwt_secret
+   expiration: 86400000
+server:
+  port: 56932
+logging:
+  level:
+    root: info
+    org.holo: info
