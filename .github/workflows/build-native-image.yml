@@ -2,6 +2,12 @@ name: Build Native Image with GraalVM and Docker
 
 on:
   workflow_dispatch:  # 手动触发
+    inputs:
+      version:
+        description: 'Docker镜像版本号'
+        required: true
+        default: '1.0.0'
+        type: string
 
 jobs:
   build-native:
@@ -31,7 +37,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build Docker image
-        run: docker build -t holo-backend:${{ github.sha }} .
+        run: docker build -t holo-backend:${{ github.event.inputs.version }} .
 
       - name: Log in to GitHub Packages
         uses: docker/login-action@v3
@@ -42,21 +48,21 @@ jobs:
 
       - name: Tag Docker image for GitHub Packages
         run: |
-          # 使用更简单的镜像名称，避免组织权限问题
-          docker tag holo-backend:${{ github.sha }} ghcr.io/${{ github.actor }}/holo-backend:${{ github.sha }}
-          docker tag holo-backend:${{ github.sha }} ghcr.io/${{ github.actor }}/holo-backend:latest
+          # 使用手动指定的版本号作为标签
+          docker tag holo-backend:${{ github.event.inputs.version }} ghcr.io/${{ github.actor }}/holo-backend:${{ github.event.inputs.version }}
+          docker tag holo-backend:${{ github.event.inputs.version }} ghcr.io/${{ github.actor }}/holo-backend:latest
 
       - name: Push Docker image to GitHub Packages
         run: |
-          docker push ghcr.io/${{ github.actor }}/holo-backend:${{ github.sha }}
+          docker push ghcr.io/${{ github.actor }}/holo-backend:${{ github.event.inputs.version }}
           docker push ghcr.io/${{ github.actor }}/holo-backend:latest
 
       - name: Save Docker image as tar
-        run: docker save -o holo-backend-${{ github.sha }}.tar holo-backend:${{ github.sha }}
+        run: docker save -o holo-backend-${{ github.event.inputs.version }}.tar holo-backend:${{ github.event.inputs.version }}
 
       - name: Upload Docker image as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: holo-backend-image
-          path: holo-backend-${{ github.sha }}.tar
+          name: holo-backend-image-${{ github.event.inputs.version }}
+          path: holo-backend-${{ github.event.inputs.version }}.tar
           retention-days: 30
