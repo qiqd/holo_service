@@ -18,6 +18,9 @@ jobs:
           native-image-job-reports: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Make mvnw executable
+        run: chmod +x ./mvnw
+
       - name: Build native image with Maven
         run: ./mvnw -Pnative native:compile
 
