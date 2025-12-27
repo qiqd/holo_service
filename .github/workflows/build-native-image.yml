@@ -32,7 +32,7 @@ jobs:
         run: ./mvnw -Pnative native:compile
 
       - name: List target directory
-        run: ls -la target/
+        run: dir target/
 
       - name: Upload Ubuntu native image
         uses: actions/upload-artifact@v4
