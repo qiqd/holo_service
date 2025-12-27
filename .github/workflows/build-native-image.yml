@@ -42,13 +42,14 @@ jobs:
 
       - name: Tag Docker image for GitHub Packages
         run: |
-          docker tag holo-backend:${{ github.sha }} ghcr.io/${{ github.repository }}:${{ github.sha }}
-          docker tag holo-backend:${{ github.sha }} ghcr.io/${{ github.repository }}:latest
+          # 使用更简单的镜像名称，避免组织权限问题
+          docker tag holo-backend:${{ github.sha }} ghcr.io/${{ github.actor }}/holo-backend:${{ github.sha }}
+          docker tag holo-backend:${{ github.sha }} ghcr.io/${{ github.actor }}/holo-backend:latest
 
       - name: Push Docker image to GitHub Packages
         run: |
-          docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
-          docker push ghcr.io/${{ github.repository }}:latest
+          docker push ghcr.io/${{ github.actor }}/holo-backend:${{ github.sha }}
+          docker push ghcr.io/${{ github.actor }}/holo-backend:latest
 
       - name: Save Docker image as tar
         run: docker save -o holo-backend-${{ github.sha }}.tar holo-backend:${{ github.sha }}
