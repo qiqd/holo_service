@@ -15,3 +15,7 @@ logging:
   level:
     root: info
     org.holo: info
+    org.springframework.data.mongodb: debug
+springdoc:
+   api-docs:
+     enabled: false
