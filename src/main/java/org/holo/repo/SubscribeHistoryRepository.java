@@ -12,4 +12,10 @@ public interface SubscribeHistoryRepository extends MongoRepository<SubscribeHis
   List<SubscribeHistory> findByUserId(String userId);
 
   List<SubscribeHistory> removeByUserId(String userId);
+
+  void removeById(String id);
+
+  void removeByIdAndUserId(String id, String userId);
+
+  SubscribeHistory queryByIdAndUserId(String id, String userId);
 }
