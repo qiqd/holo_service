@@ -13,24 +13,26 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SubscribeHistoryService {
-  private final SubscribeHistoryRepository subscribeHistoryRepository;
+  private final SubscribeHistoryRepository repository;
   private final UserContent userContent;
   private final MongoTemplate mongoTemplate;
 
   public List<SubscribeHistory> queryAll() {
-    return subscribeHistoryRepository.findByUserId(userContent.getUserId());
+    return repository.findByUserId(userContent.getUserId());
   }
 
-  public List<SubscribeHistory> saveAll(List<SubscribeHistory> histories) {
-    removeAll();
-    histories.forEach(history -> {
-      history.setCreatedAt(LocalDateTime.now());
-      history.setUserId(userContent.getUserId());
-    });
-    return subscribeHistoryRepository.saveAll(histories);
+  public SubscribeHistory queryBySubId(Integer subId) {
+    return repository.queryFirstBySubIdAndUserId(subId, userContent.getUserId()).getFirst();
   }
-
+  public void removeBySubId(Integer subId) {
+      repository.removeFirstBySubIdAndUserId(subId, userContent.getUserId());
+  }
+ public SubscribeHistory save(SubscribeHistory subscribeHistory){
+    subscribeHistory.setUserId(userContent.getUserId());
+    subscribeHistory.setCreatedAt(LocalDateTime.now());
+    return repository.save(subscribeHistory);
+ }
   public void removeAll() {
-    subscribeHistoryRepository.removeByUserId(userContent.getUserId());
+    repository.removeByUserId(userContent.getUserId());
   }
 }

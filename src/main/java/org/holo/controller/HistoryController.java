@@ -34,6 +34,11 @@ public class HistoryController {
     return ResponseEntity.ok(playbackHistoryService.queryAll());
   }
 
+  @GetMapping("/query/playback/{subId}")
+  public ResponseEntity<PlaybackHistory> queryPlaybackHistory(@PathVariable Integer subId) {
+    return ResponseEntity.ok(playbackHistoryService.queryBySubId(subId));
+  }
+
   @Operation(summary = "保存播放历史", description = "批量保存或更新播放历史记录")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "保存成功",
@@ -41,10 +46,15 @@ public class HistoryController {
                           schema = @Schema(implementation = PlaybackHistory.class)))
   })
   @PostMapping("/save/playback")
-  public ResponseEntity<List<PlaybackHistory>> savePlayback(@RequestBody List<PlaybackHistory> history) {
-    return ResponseEntity.ok(playbackHistoryService.saveAll(history));
+  public ResponseEntity<PlaybackHistory> savePlayback(@RequestBody PlaybackHistory history) {
+    return ResponseEntity.ok(playbackHistoryService.save(history));
   }
 
+  @DeleteMapping("/delete/playback/{subId}")
+  public ResponseEntity<String> removePlaybackHistory(@PathVariable Integer subId) {
+    playbackHistoryService.removeBySubId(subId);
+    return ResponseEntity.ok("Playback history removed");
+  }
 
   @Operation(summary = "删除所有播放历史", description = "删除当前用户的所有播放历史记录")
   @ApiResponses(value = {

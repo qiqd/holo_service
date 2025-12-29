@@ -11,8 +11,9 @@ public interface PlaybackHistoryRepository extends MongoRepository<PlaybackHisto
 
   List<PlaybackHistory> findByUserId(String userId);
 
-  List<PlaybackHistory> removeByUserId(String userId);
-
-
   List<PlaybackHistory> queryFirstBySubIdAndUserId(Integer subId, String userId);
+
+  void removeFirstBySubIdAndUserId(Integer subId, String userId);
+
+  void removeByUserId(String userId);
 }

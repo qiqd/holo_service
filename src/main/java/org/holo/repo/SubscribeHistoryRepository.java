@@ -11,11 +11,9 @@ public interface SubscribeHistoryRepository extends MongoRepository<SubscribeHis
 
   List<SubscribeHistory> findByUserId(String userId);
 
-  List<SubscribeHistory> removeByUserId(String userId);
+  void removeByUserId(String userId);
 
-  void removeById(String id);
+  List<SubscribeHistory> queryFirstBySubIdAndUserId(Integer subId, String userId);
 
-  void removeByIdAndUserId(String id, String userId);
-
-  SubscribeHistory queryByIdAndUserId(String id, String userId);
+   void   removeFirstBySubIdAndUserId(Integer subId, String userId);
 }

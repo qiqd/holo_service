@@ -32,6 +32,15 @@ public class SubscribeController {
     return ResponseEntity.ok(subscribeHistoryService.queryAll());
   }
 
+  @GetMapping("/query/subscribe/{subId}")
+  public ResponseEntity<SubscribeHistory> querySubscribeHistory(@PathVariable Integer subId) {
+    return ResponseEntity.ok(subscribeHistoryService.queryBySubId(subId));
+  }
+  @DeleteMapping("/query/subscribe/{subId}")
+  public ResponseEntity<String> removeSubscribeHistory(@PathVariable Integer subId) {
+    subscribeHistoryService.removeBySubId(subId);
+    return ResponseEntity.ok("Subscribe history removed");
+  }
   @Operation(summary = "保存订阅历史", description = "批量保存或更新订阅历史记录")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "保存成功",
@@ -39,8 +48,8 @@ public class SubscribeController {
                           schema = @Schema(implementation = SubscribeHistory.class)))
   })
   @PostMapping("/save/subscribe")
-  public ResponseEntity<List<SubscribeHistory>> saveSubscribe(@RequestBody List<SubscribeHistory> historyList) {
-    return ResponseEntity.ok(subscribeHistoryService.saveAll(historyList));
+  public ResponseEntity<SubscribeHistory> saveSubscribe(@RequestBody  SubscribeHistory subscribeHistory) {
+    return ResponseEntity.ok(subscribeHistoryService.save(subscribeHistory));
   }
   @Operation(summary = "删除所有订阅历史", description = "删除当前用户的所有订阅历史记录")
   @ApiResponses(value = {

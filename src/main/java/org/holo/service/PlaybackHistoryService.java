@@ -20,13 +20,16 @@ public class PlaybackHistoryService {
     return repository.findByUserId(userContent.getUserId());
   }
 
-  public List<PlaybackHistory> saveAll(List<PlaybackHistory> playbackHistories) {
-    removeAll();
-    playbackHistories.forEach(history -> {
-      history.setCreatedAt(LocalDateTime.now());
-      history.setUserId(userContent.getUserId());
-    });
-    return repository.saveAll(playbackHistories);
+  public PlaybackHistory queryBySubId(Integer subId) {
+    return repository.queryFirstBySubIdAndUserId(subId, userContent.getUserId()).getFirst();
+  }
+  public void removeBySubId(Integer subId) {
+    repository.removeFirstBySubIdAndUserId(subId, userContent.getUserId());
+  }
+  public PlaybackHistory save(PlaybackHistory playbackHistory){
+    playbackHistory.setUserId(userContent.getUserId());
+    playbackHistory.setCreatedAt(LocalDateTime.now());
+    return repository.save(playbackHistory);
   }
 
   public void removeAll() {
