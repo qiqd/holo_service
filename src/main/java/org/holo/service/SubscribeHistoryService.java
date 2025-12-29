@@ -29,6 +29,7 @@ public class SubscribeHistoryService {
     for (SubscribeHistory history : subscribeHistories) {
       Query query = new Query(Criteria.where("subId").is(history.getSubId()).and("userId").is(userContent.getUserId()));
       Update update = new Update()
+              .set("userId", userContent.getUserId())
               .set("title", history.getTitle())
               .set("imgUrl", history.getImgUrl())
               .set("airDate", history.getAirDate())
