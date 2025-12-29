@@ -26,9 +26,9 @@ public class HistoryController {
 
   @Operation(summary = "查询订阅历史", description = "获取当前用户的所有订阅历史记录")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "查询成功",
-          content = @Content(mediaType = "application/json",
-              schema = @Schema(implementation = SubscribeHistory.class)))
+          @ApiResponse(responseCode = "200", description = "查询成功",
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = SubscribeHistory.class)))
   })
   @GetMapping("/query/subscribe")
   public ResponseEntity<List<SubscribeHistory>> querySubscribeHistory() {
@@ -37,9 +37,9 @@ public class HistoryController {
 
   @Operation(summary = "查询播放历史", description = "获取当前用户的所有播放历史记录")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "查询成功",
-          content = @Content(mediaType = "application/json",
-              schema = @Schema(implementation = PlaybackHistory.class)))
+          @ApiResponse(responseCode = "200", description = "查询成功",
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = PlaybackHistory.class)))
   })
   @GetMapping("/query/playback")
   public ResponseEntity<List<PlaybackHistory>> queryPlaybackHistory() {
@@ -48,9 +48,9 @@ public class HistoryController {
 
   @Operation(summary = "保存订阅历史", description = "批量保存或更新订阅历史记录")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "保存成功",
-          content = @Content(mediaType = "application/json",
-              schema = @Schema(implementation = SubscribeHistory.class)))
+          @ApiResponse(responseCode = "200", description = "保存成功",
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = SubscribeHistory.class)))
   })
   @PostMapping("/save/subscribe")
   public ResponseEntity<List<SubscribeHistory>> saveSubscribe(@RequestBody List<SubscribeHistory> historyList) {
@@ -59,9 +59,9 @@ public class HistoryController {
 
   @Operation(summary = "保存播放历史", description = "批量保存或更新播放历史记录")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "保存成功",
-          content = @Content(mediaType = "application/json",
-              schema = @Schema(implementation = PlaybackHistory.class)))
+          @ApiResponse(responseCode = "200", description = "保存成功",
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = PlaybackHistory.class)))
   })
   @PostMapping("/save/playback")
   public ResponseEntity<List<PlaybackHistory>> savePlayback(@RequestBody List<PlaybackHistory> historyList) {
@@ -70,9 +70,9 @@ public class HistoryController {
 
   @Operation(summary = "删除所有订阅历史", description = "删除当前用户的所有订阅历史记录")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "删除成功",
-          content = @Content(mediaType = "text/plain",
-              schema = @Schema(implementation = String.class)))
+          @ApiResponse(responseCode = "200", description = "删除成功",
+                  content = @Content(mediaType = "text/plain",
+                          schema = @Schema(implementation = String.class)))
   })
   @DeleteMapping("/delete/subscribe")
   public ResponseEntity<String> removeAllSubscribeHistory() {
@@ -82,9 +82,9 @@ public class HistoryController {
 
   @Operation(summary = "删除所有播放历史", description = "删除当前用户的所有播放历史记录")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "删除成功",
-          content = @Content(mediaType = "text/plain",
-              schema = @Schema(implementation = String.class)))
+          @ApiResponse(responseCode = "200", description = "删除成功",
+                  content = @Content(mediaType = "text/plain",
+                          schema = @Schema(implementation = String.class)))
   })
   @DeleteMapping("/delete/playback")
   public ResponseEntity<String> removeAllPlaybackHistory() {
