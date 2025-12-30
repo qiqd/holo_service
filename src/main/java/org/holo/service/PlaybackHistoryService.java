@@ -29,6 +29,23 @@ public class PlaybackHistoryService {
   public PlaybackHistory save(PlaybackHistory playbackHistory){
     playbackHistory.setUserId(userContent.getUserId());
     playbackHistory.setCreatedAt(LocalDateTime.now());
+    List<PlaybackHistory> playbackHistories = repository.queryFirstBySubIdAndUserId(playbackHistory.getSubId(), userContent.getUserId());
+    if (playbackHistories.isEmpty()) {
+       playbackHistory.setIsSync(true);
+       repository.save(playbackHistory);
+    }else {
+      PlaybackHistory first = playbackHistories.getFirst();
+      first.setIsSync(true);
+      first.setLastPlaybackAt(playbackHistory.getLastPlaybackAt());
+      first.setPosition(playbackHistory.getPosition());
+      first.setEpisodeIndex(playbackHistory.getEpisodeIndex());
+      first.setLineIndex(playbackHistory.getLineIndex());
+      first.setAirDate(playbackHistory.getAirDate());
+      first.setTitle(playbackHistory.getTitle());
+      first.setImgUrl(playbackHistory.getImgUrl());
+      repository.save(first);
+    }
+
     return repository.save(playbackHistory);
   }
 

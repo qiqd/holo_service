@@ -17,13 +17,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/history")
 @RequiredArgsConstructor
-@Tag(name = "History Management", description = "历史记录管理接口 - 包括播放历史和订阅历史")
+@Tag(name = "播放历史", description = "历史记录管理接口 - 包括播放历史和订阅历史")
 public class HistoryController {
 
   private final PlaybackHistoryService playbackHistoryService;
 
 
-  @Operation(summary = "查询播放历史", description = "获取当前用户的所有播放历史记录")
+  @Operation(summary = "查询所有播放历史", description = "获取当前用户的所有播放历史记录")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "查询成功",
                   content = @Content(mediaType = "application/json",
@@ -34,12 +34,18 @@ public class HistoryController {
     return ResponseEntity.ok(playbackHistoryService.queryAll());
   }
 
+  @Operation(summary = "查询指定播放历史", description = "根据播放历史ID查询播放历史记录")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "查询成功",
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = PlaybackHistory.class)))
+  })
   @GetMapping("/query/playback/{subId}")
   public ResponseEntity<PlaybackHistory> queryPlaybackHistory(@PathVariable Integer subId) {
     return ResponseEntity.ok(playbackHistoryService.queryBySubId(subId));
   }
 
-  @Operation(summary = "保存播放历史", description = "批量保存或更新播放历史记录")
+  @Operation(summary = "保存播放历史", description = "保存或更新播放历史记录")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "保存成功",
                   content = @Content(mediaType = "application/json",
@@ -50,6 +56,12 @@ public class HistoryController {
     return ResponseEntity.ok(playbackHistoryService.save(history));
   }
 
+  @Operation(summary = "删除指定播放历史", description = "根据播放历史ID删除播放历史记录")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "删除成功",
+                  content = @Content(mediaType = "text/plain",
+                          schema = @Schema(implementation = String.class)))
+  })
   @DeleteMapping("/delete/playback/{subId}")
   public ResponseEntity<String> removePlaybackHistory(@PathVariable Integer subId) {
     playbackHistoryService.removeBySubId(subId);
