@@ -12,6 +12,7 @@ public class AppSetting {
   private String userId;
   private String useSystemColor;
   private String themeMode;
+  private String filterWord;
   private DanmakuOption danmakuOption;
 
   @Data
