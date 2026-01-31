@@ -10,8 +10,8 @@ public class AppSetting {
   @Id
   private String id;
   private String userId;
-  private String useSystemColor;
-  private Boolean themeMode;
+  private Boolean useSystemColor;
+  private String themeMode;
   private String filterWord;
   private DanmakuOption danmakuOption;
 

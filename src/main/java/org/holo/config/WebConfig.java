@@ -2,6 +2,7 @@ package org.holo.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.holo.content.UserContent;
 import org.holo.util.JwtUtil;
@@ -22,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
   public void addInterceptors(InterceptorRegistry registry) {
     registry.addInterceptor(new HandlerInterceptor() {
               @Override
-              public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+              public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
                 String requestHeader = request.getHeader("User-Agent");
                 String token = request.getHeader("Authorization");
                 if (!requestHeader.contains("Holo/client")) {
@@ -39,7 +40,7 @@ public class WebConfig implements WebMvcConfigurer {
               }
 
               @Override
-              public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
+              public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler, @Nullable Exception ex)  {
                 userContent.removeUserId();
               }
             }).addPathPatterns("/**")
