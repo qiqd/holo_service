@@ -16,8 +16,7 @@ public class AppSettingHistoryService {
 
   public void saveAppSetting(AppSetting appSetting) {
     appSetting.setUserId(userContent.getUserId());
-    AppSetting setting = Optional.ofNullable(appSettingRepository.queryFirstByUserId(userContent.getUserId())).orElse(new AppSetting());
-    appSetting.setId(setting.getId());
+   appSetting.setUserId(userContent.getUserId());
     appSettingRepository.save(appSetting);
   }
 

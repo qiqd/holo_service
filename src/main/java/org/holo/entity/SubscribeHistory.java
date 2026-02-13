@@ -42,4 +42,7 @@ public class SubscribeHistory {
 
   @Schema(description = "是否同步", example = "true")
   private Boolean isSync;
+
+  @Schema(description = "观看状态 0:无状态 1:想看 2:看过 3:在看", example = "2")
+  private Integer viewingStatus;
 }

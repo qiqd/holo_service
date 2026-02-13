@@ -27,7 +27,9 @@ public class SettingController {
                           schema = @Schema(implementation = AppSetting.class)))
   })
   public ResponseEntity<AppSetting> queryAppSetting() {
-    return ResponseEntity.ok(appSettingHistoryService.queryAppSetting());
+    AppSetting appSetting = appSettingHistoryService.queryAppSetting();
+    System.out.println(appSetting);
+    return ResponseEntity.ok(appSetting);
   }
 
   @PostMapping
