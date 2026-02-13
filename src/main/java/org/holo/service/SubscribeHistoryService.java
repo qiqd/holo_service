@@ -1,10 +1,12 @@
 package org.holo.service;
 
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.holo.content.UserContent;
 import org.holo.entity.SubscribeHistory;
 import org.holo.repo.SubscribeHistoryRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -38,10 +40,9 @@ public class SubscribeHistoryService {
       return repository.save(subscribeHistory);
     } else {
       SubscribeHistory first = subscribeHistories.getFirst();
-      first.setIsSync(true);
-      first.setAirDate(subscribeHistory.getAirDate());
-      first.setTitle(subscribeHistory.getTitle());
-      first.setImgUrl(subscribeHistory.getImgUrl());
+      String id = first.getId();
+      BeanUtils.copyProperties(subscribeHistory, first);
+      first.setId(id);
       return repository.save(first);
     }
   }

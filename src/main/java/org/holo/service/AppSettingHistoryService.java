@@ -13,7 +13,6 @@ public class AppSettingHistoryService {
 
     public void saveAppSetting(AppSetting appSetting) {
         appSetting.setUserId(userContent.getUserId());
-        appSetting.setUserId(userContent.getUserId());
         appSettingRepository.save(appSetting);
     }
 
