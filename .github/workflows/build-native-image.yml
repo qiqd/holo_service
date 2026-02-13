@@ -2,12 +2,6 @@ name: Build Native Image with GraalVM and Docker
 
 on:
   workflow_dispatch:  # 手动触发
-    inputs:
-      version:
-        description: 'Docker镜像版本号'
-        required: true
-        default: '1.0.0'
-        type: string
 
 jobs:
   # 构建Ubuntu本地镜像和Docker镜像
@@ -16,6 +10,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Get version and name from pom.xml
+        id: get-project-info
+        run: |
+          $version = mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+          $name = mvn help:evaluate -Dexpression=project.name -q -DforceStdout
+          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+          echo "NAME=$name" >> $env:GITHUB_OUTPUT
+          echo "Project version: $version"
+          echo "Project name: $name"
 
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
@@ -37,15 +41,15 @@ jobs:
       - name: Upload Ubuntu native image
         uses: actions/upload-artifact@v4
         with:
-          name: holo_service-ubuntu-${{ github.event.inputs.version }}
-          path: target/holo_service
+          name: holo-service-ubuntu-${{ steps.get-version.outputs.VERSION }}
+          path: target/holo-service
           retention-days: 30
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Build Docker image
-        run: docker build -t holo_service:${{ github.event.inputs.version }} .
+        run: docker build -t ${{ steps.get-project-info.outputs.NAME }}:${{ steps.get-project-info.outputs.VERSION }} .
 
       - name: Log in to GitHub Packages
         uses: docker/login-action@v3
@@ -56,23 +60,23 @@ jobs:
 
       - name: Tag Docker image for GitHub Packages
         run: |
-          # 使用手动指定的版本号作为标签
-          docker tag holo_service:${{ github.event.inputs.version }} ghcr.io/${{ github.actor }}/holo_service:${{ github.event.inputs.version }}
-          docker tag holo_service:${{ github.event.inputs.version }} ghcr.io/${{ github.actor }}/holo_service:latest
+          # 使用从pom.xml获取的名称和版本号
+          docker tag ${{ steps.get-project-info.outputs.NAME }}:${{ steps.get-project-info.outputs.VERSION }} ghcr.io/${{ github.actor }}/${{ steps.get-project-info.outputs.NAME }}:${{ steps.get-project-info.outputs.VERSION }}
+          docker tag ${{ steps.get-project-info.outputs.NAME }}:${{ steps.get-project-info.outputs.VERSION }} ghcr.io/${{ github.actor }}/${{ steps.get-project-info.outputs.NAME }}:latest
 
       - name: Push Docker image to GitHub Packages
         run: |
-          docker push ghcr.io/${{ github.actor }}/holo_service:${{ github.event.inputs.version }}
-          docker push ghcr.io/${{ github.actor }}/holo_service:latest
+          docker push ghcr.io/${{ github.actor }}/${{ steps.get-project-info.outputs.NAME }}:${{ steps.get-project-info.outputs.VERSION }}
+          docker push ghcr.io/${{ github.actor }}/${{ steps.get-project-info.outputs.NAME }}:latest
 
       - name: Save Docker image as tar
-        run: docker save -o holo_service-docker-${{ github.event.inputs.version }}.tar holo_service:${{ github.event.inputs.version }}
+        run: docker save -o ${{ steps.get-project-info.outputs.NAME }}-docker-${{ steps.get-project-info.outputs.VERSION }}.tar ${{ steps.get-project-info.outputs.NAME }}:${{ steps.get-project-info.outputs.VERSION }}
 
       - name: Upload Docker image as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: holo_service-docker-${{ github.event.inputs.version }}
-          path: holo_service-docker-${{ github.event.inputs.version }}.tar
+          name: ${{ steps.get-project-info.outputs.NAME }}-docker-${{ steps.get-project-info.outputs.VERSION }}
+          path: ${{ steps.get-project-info.outputs.NAME }}-docker-${{ steps.get-project-info.outputs.VERSION }}.tar
           retention-days: 30
 
   # 构建Windows本地镜像
@@ -81,6 +85,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Get version and name from pom.xml
+        id: get-project-info
+        run: |
+          $version = mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+          $name = mvn help:evaluate -Dexpression=project.name -q -DforceStdout
+          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+          echo "NAME=$name" >> $env:GITHUB_OUTPUT
+          echo "Project version: $version"
+          echo "Project name: $name"
 
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
@@ -99,6 +113,6 @@ jobs:
       - name: Upload Windows native image
         uses: actions/upload-artifact@v4
         with:
-          name: holo_service-windows-${{ github.event.inputs.version }}
-          path: target/holo_service.exe
+          name: holo-service-windows-${{ steps.get-version.outputs.VERSION }}
+          path: target/holo-service.exe
           retention-days: 30

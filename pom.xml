@@ -9,7 +9,7 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.github.qiqd.holo</groupId>
-  <artifactId>holo_service</artifactId>
+  <artifactId>holo-service</artifactId>
   <version>1.0.13</version>
   <name>Holo</name>
   <description>Holo backend service provides RESTful APIs for Holo mobile app,power by Spring Boot 3.5.9</description>
