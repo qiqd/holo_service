@@ -14,12 +14,12 @@ jobs:
       - name: Get version and name from pom.xml
         id: get-project-info
         run: |
-          $version = mvn help:evaluate -Dexpression=project.version -q -DforceStdout
-          $name = mvn help:evaluate -Dexpression=project.name -q -DforceStdout
-          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
-          echo "NAME=$name" >> $env:GITHUB_OUTPUT
-          echo "Project version: $version"
-          echo "Project name: $name"
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          NAME=$(mvn help:evaluate -Dexpression=project.name -q -DforceStdout)
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "NAME=$NAME" >> $GITHUB_OUTPUT
+          echo "Project version: $VERSION"
+          echo "Project name: $NAME"
 
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
@@ -89,12 +89,12 @@ jobs:
       - name: Get version and name from pom.xml
         id: get-project-info
         run: |
-          $version = mvn help:evaluate -Dexpression=project.version -q -DforceStdout
-          $name = mvn help:evaluate -Dexpression=project.name -q -DforceStdout
-          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
-          echo "NAME=$name" >> $env:GITHUB_OUTPUT
-          echo "Project version: $version"
-          echo "Project name: $name"
+          $VERSION = & mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+          $NAME = & mvn help:evaluate -Dexpression=project.name -q -DforceStdout
+          echo "VERSION=$VERSION" >> $env:GITHUB_OUTPUT
+          echo "NAME=$NAME" >> $env:GITHUB_OUTPUT
+          echo "Project version: $VERSION"
+          echo "Project name: $NAME"
 
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
